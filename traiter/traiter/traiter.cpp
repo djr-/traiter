@@ -3,6 +3,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 #include <sys/stat.h>
+#include "root_system.h"
 
 using namespace cv;
 
@@ -45,7 +46,7 @@ int main(int argc, char** argv)
 bool fileExists(const string& fileName)
 {
 	struct stat buffer;
-	return (stat(fileName.c_str(), &buffer) == 0);
+	return stat(fileName.c_str(), &buffer) == 0;
 }
 
 void onThresholdTrackbar(int thresholdValue, void*)
