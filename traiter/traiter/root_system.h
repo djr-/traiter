@@ -10,6 +10,9 @@ class RootSystem sealed
 public:
 	RootSystem(cv::Mat image);
 
+	cv::Mat getImage();
+
+	// Traits
 	double bushiness();
 	double convexArea();
 	double networkDepth();

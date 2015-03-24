@@ -19,6 +19,8 @@ int main(int argc, char** argv)
 
 	RootSystem rootSystem = RootSystem(originalImage);
 
+	imshow("Root System Image", rootSystem.getImage());
+
 	waitKey();
 	
 	return EXIT_SUCCESS;
