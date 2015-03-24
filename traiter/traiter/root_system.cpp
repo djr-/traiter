@@ -1,4 +1,6 @@
 #include "root_system.h"
+#include "root_image_preprocessor.h"
+#include <opencv2/opencv.hpp>
 
 using namespace cv;
 
@@ -9,7 +11,7 @@ using namespace cv;
 //////////////////////////////////////////////////////////////////////////////////
 RootSystem::RootSystem(Mat image)
 {
-	_image = image;
+	_image = RootImagePreprocessor::PrepareForAnalysis(image);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
