@@ -10,12 +10,13 @@
 class RootImagePreprocessor final
 {
 public:
-	static cv::Mat PrepareForAnalysis(cv::Mat image);
+	static cv::Mat prepareForAnalysis(cv::Mat image);
+	static int getMaximumThresholdValue();
 private:
 	RootImagePreprocessor();
 
 	static const int thresholdValue = 180;
 
-	static const int thresholdType = cv::THRESH_BINARY_INV;
+	static const int thresholdType = cv::THRESH_BINARY;
 	static const int maximumThresholdValue = 255;
 };

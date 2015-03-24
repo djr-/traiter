@@ -3,11 +3,11 @@
 using namespace cv;
 
 //////////////////////////////////////////////////////////////////////////////////
-// RootImagePreprocessor::PrepareForAnalysis()
+// RootImagePreprocessor::prepareForAnalysis()
 //
 // Prepares the image for analysis.
 //////////////////////////////////////////////////////////////////////////////////
-Mat RootImagePreprocessor::PrepareForAnalysis(Mat image)
+Mat RootImagePreprocessor::prepareForAnalysis(Mat image)
 {
 	Mat processedImage = image.clone();
 
@@ -17,4 +17,14 @@ Mat RootImagePreprocessor::PrepareForAnalysis(Mat image)
 	//TODO: Compute skeleton of the image.
 
 	return processedImage;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// RootImagePreprocessor::getMaximumThresholdValue()
+//
+// Returns the maximum threshold value that was used to threshold the image.
+//////////////////////////////////////////////////////////////////////////////////
+int RootImagePreprocessor::getMaximumThresholdValue()
+{
+	return maximumThresholdValue;
 }

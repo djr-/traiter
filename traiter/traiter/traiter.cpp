@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include "root_system.h"
 
+using namespace std;
 using namespace cv;
 
 bool fileExists(const string& fileName);
@@ -18,6 +19,8 @@ int main(int argc, char** argv)
 	originalImage = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
 
 	RootSystem rootSystem = RootSystem(originalImage);
+
+	cout << "Network area: " << rootSystem.networkArea() << " pixels.\n";
 
 	imshow("Root System Image", rootSystem.getImage());
 

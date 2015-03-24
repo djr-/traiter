@@ -11,7 +11,7 @@ using namespace cv;
 //////////////////////////////////////////////////////////////////////////////////
 RootSystem::RootSystem(Mat image)
 {
-	_image = RootImagePreprocessor::PrepareForAnalysis(image);
+	_image = RootImagePreprocessor::prepareForAnalysis(image);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +163,18 @@ double RootSystem::minorAxis()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkArea()
 {
-	return 0;
+	double networkArea = 0;
+
+	MatIterator_<uchar> it, end;
+	for (it = _image.begin<uchar>(), end = _image.end<uchar>(); it != end; ++it)
+	{
+		if (*it == RootImagePreprocessor::getMaximumThresholdValue())
+		{
+			networkArea++;
+		}
+	}
+
+	return networkArea;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
