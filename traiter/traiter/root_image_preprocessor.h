@@ -1,3 +1,5 @@
+#pragma once
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -12,11 +14,20 @@ class RootImagePreprocessor final
 public:
 	static cv::Mat prepareForAnalysis(cv::Mat image);
 	static int getMaximumThresholdValue();
+
+	static cv::Mat getRemovedContours();
 private:
 	RootImagePreprocessor();
 
-	static const int thresholdValue = 180;
+	// Helper functions to prepare image for analysis
+	static cv::Mat thresholdImage(cv::Mat image);
+	static cv::Mat keepOnlyLargestContour(cv::Mat image);
 
+	// Data useful for debugging/analysis
+	static cv::Mat removedContours;
+
+	// Default values for thresholding.
+	static const int thresholdValue = 176;
 	static const int thresholdType = cv::THRESH_BINARY;
 	static const int maximumThresholdValue = 255;
 };
