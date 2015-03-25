@@ -1,5 +1,6 @@
 #include "root_system.h"
 #include "root_image_preprocessor.h"
+#include "ocv_utilities.h"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
@@ -187,7 +188,7 @@ double RootSystem::networkArea()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::perimeter()
 {
-	return 0;
+	return 0;	//TODO: Skeleton not needed.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +200,8 @@ double RootSystem::perimeter()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::aspectRatio()
 {
+	OcvUtilities::computeBestFittingEllipse(_image, RootImagePreprocessor::getMaximumThresholdValue());
+
 	return 0;
 }
 

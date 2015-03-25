@@ -84,11 +84,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ocv_utilities.cpp" />
     <ClCompile Include="root_image_preprocessor.cpp" />
     <ClCompile Include="root_system.cpp" />
     <ClCompile Include="traiter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ocv_utilities.h" />
     <ClInclude Include="root_image_preprocessor.h" />
     <ClInclude Include="root_system.h" />
   </ItemGroup>

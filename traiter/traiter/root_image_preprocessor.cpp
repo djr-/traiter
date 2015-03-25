@@ -1,11 +1,12 @@
 #include "root_image_preprocessor.h"
+#include "ocv_utilities.h"
 
 using namespace cv;
 
 Mat RootImagePreprocessor::removedContours;
 
 //////////////////////////////////////////////////////////////////////////////////
-// RootImagePreprocessor::prepareForAnalysis()
+// prepareForAnalysis()
 //
 // Prepares the image for analysis.
 //////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ Mat RootImagePreprocessor::prepareForAnalysis(Mat image)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-// RootImagePreprocessor::getMaximumThresholdValue()
+// getMaximumThresholdValue()
 //
 // Returns the maximum threshold value that was used to threshold the image.
 //////////////////////////////////////////////////////////////////////////////////
@@ -33,9 +34,10 @@ int RootImagePreprocessor::getMaximumThresholdValue()
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-// RootImagePreprocessor::thresholdImage()
+// thresholdImage()
 //
 // Thresholds the image according to the configurations threshold parameters.
+//
 // TODO: Add support for adaptive and double adaptive thresholding rather than always using global.
 //////////////////////////////////////////////////////////////////////////////////
 Mat RootImagePreprocessor::thresholdImage(Mat image)
@@ -46,7 +48,7 @@ Mat RootImagePreprocessor::thresholdImage(Mat image)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-// RootImagePreprocessor::keepOnlyLargestContour()
+// keepOnlyLargestContour()
 //
 // Remove all contours that are not the largest contour.
 // Let's save a Mat of what was removed to removedContours to assist in debugging
@@ -65,17 +67,7 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 	vector<Vec4i> hierarchy;
 	findContours(largestContour, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE);
 
-	int largestContourIndex = 0;
-	double largestContourArea = 0;
-	for (int i = 0; i < contours.size(); i++)
-	{
-		double currentContourArea = contourArea(contours[i]);
-		if (currentContourArea > largestContourArea)
-		{
-			largestContourArea = currentContourArea;
-			largestContourIndex = i;
-		}
-	}
+	int largestContourIndex = OcvUtilities::getLargestContourIndex(contours);
 
 	image = image.zeros(image.size(), CV_8UC1);	// Clear the existing image before drawing the largest contour back onto it.
 
@@ -87,9 +79,10 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-// RootImagePreprocessor::getRemovedContours()
+// getRemovedContours()
 //
 // Returns an image showing which contours were removed from the specified image.
+// Note that this does not return a cloned version of removedContours!
 //////////////////////////////////////////////////////////////////////////////////
 Mat RootImagePreprocessor::getRemovedContours()
 {

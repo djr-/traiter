@@ -21,6 +21,7 @@ int main(int argc, char** argv)
 	RootSystem rootSystem = RootSystem(originalImage);
 
 	cout << "Network area: " << rootSystem.networkArea() << " pixels.\n";
+	rootSystem.aspectRatio();
 
 	imshow("Root System Image", rootSystem.getImage());
 
