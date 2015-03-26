@@ -22,6 +22,7 @@ int main(int argc, char** argv)
 
 	cout << "Network area: " << rootSystem.networkArea() << " pixels.\n";
 	rootSystem.aspectRatio();
+	rootSystem.perimeter();
 
 	imshow("Root System Image", rootSystem.getImage());
 

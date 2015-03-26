@@ -61,7 +61,7 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 	removedContours = image.clone();
 
 	Mat largestContour;
-	copyMakeBorder(image, largestContour, 1, 1, 1, 1, BORDER_CONSTANT);	// If we don't pad, then findContours will not mark the edge as part of the contour. We will fix then when we draw the contours on the original image.
+	OcvUtilities::padImage(image, largestContour);	// If we don't pad, then findContours will not mark the edge as part of the contour. We will fix then when we draw the contours on the original image.
 
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
@@ -70,8 +70,11 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 	int largestContourIndex = OcvUtilities::getLargestContourIndex(contours);
 
 	image = image.zeros(image.size(), CV_8UC1);	// Clear the existing image before drawing the largest contour back onto it.
+	largestContour = largestContour.zeros(largestContour.size(), CV_8UC1);
 
-	drawContours(image, contours, largestContourIndex, Scalar(maximumThresholdValue), CV_FILLED, 8, hierarchy);
+	drawContours(largestContour, contours, largestContourIndex, Scalar(maximumThresholdValue), CV_FILLED, 8, hierarchy);
+
+	OcvUtilities::removePadding(largestContour, image);
 
 	removedContours = removedContours - image;
 

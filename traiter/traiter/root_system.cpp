@@ -188,7 +188,33 @@ double RootSystem::networkArea()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::perimeter()
 {
-	return 0;	//TODO: Skeleton not needed.
+	double perimeter = 0;
+
+	for (int row = 0; row < _image.size().height; ++row)
+	{
+		for (int col = 0; col < _image.size().width; ++col)
+		{
+			if (OcvUtilities::isPointWhite(_image, Point(col, row)))
+			{
+				vector<Point> neighbors = OcvUtilities::getNeighboringPixels(_image, Point(col, row));
+
+				bool allWhiteNeighbors = true;
+				
+				for (vector<Point>::iterator it = neighbors.begin(); it != neighbors.end(); ++it)
+				{
+					if (!OcvUtilities::isPointWhite(_image, *it))
+					{
+						allWhiteNeighbors = false;
+					}
+				}
+
+				if (allWhiteNeighbors)
+					perimeter++;
+			}
+		}
+	}
+
+	return perimeter;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
