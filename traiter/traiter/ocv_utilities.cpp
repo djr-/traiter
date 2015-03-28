@@ -94,7 +94,7 @@ bool OcvUtilities::isPointWhite(const Mat& image, const Point& point)
 //////////////////////////////////////////////////////////////////////////////////
 // getNeighboringPixels()
 //
-// Returns a list of the neighboring pixels that are in the image.
+// Returns a list of the 8 neighboring pixels that are in the image.
 //////////////////////////////////////////////////////////////////////////////////
 vector<Point> OcvUtilities::getNeighboringPixels(const Mat& image, const Point& point)
 {

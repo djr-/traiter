@@ -13,6 +13,8 @@ using namespace cv;
 RootSystem::RootSystem(Mat image)
 {
 	_image = RootImagePreprocessor::prepareForAnalysis(image);
+
+	//TODO: Should we perform the findcontour here, and only perform our operations on that?
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +48,22 @@ double RootSystem::bushiness()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::convexArea()
 {
-	return 0;
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierarchy;
+
+	findContours(_image.clone(), contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+
+	int largestContourIndex = OcvUtilities::getLargestContourIndex(contours);
+
+	vector<Point> largestHull;
+	convexHull(Mat(contours[largestContourIndex]), largestHull);
+
+	// TODO: Do we want to save the hull as a seperate image for debugging?
+	//Mat drawing = Mat::zeros(_image.size(), CV_8UC1);
+	//drawContours(drawing, vector<vector<Point>>(1, largestHull), 0, Scalar(255));	// drawContours expects a vector of vectors, so we need to construct the expected type from our largest hull contour.
+	//drawContours(drawing, contours, largestContourIndex, Scalar(255));	//TODO: Fix issue where holes are not shown within the largest contour.
+
+	return contourArea(largestHull);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +77,8 @@ double RootSystem::convexArea()
 double RootSystem::networkDepth()
 {
 	return 0;
+
+	//TODO: Find the lowest y-value in the contour minus the highest y-value in the contour.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +118,8 @@ double RootSystem::majorAxis()
 double RootSystem::networkWidth()
 {
 	return 0;
+
+	//TODO: Find the highest x-value minus the lowest x-value.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
