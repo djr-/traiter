@@ -24,7 +24,8 @@ int main(int argc, char** argv)
 	cout << "Perimeter: " << rootSystem.perimeter() << " pixels.\n";
 	rootSystem.aspectRatio();
 	rootSystem.convexArea();
-
+	rootSystem.networkDepth();
+	rootSystem.networkWidth();
 
 	imshow("Root System Image", rootSystem.getImage());
 

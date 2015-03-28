@@ -17,6 +17,8 @@ RootSystem::RootSystem(Mat image)
 
 	//TODO: Calling getRootContour() is ugly as it depends on prepareForAnalysis to be called first. We may want to precompute the contours,
 	//      and pull some of the functionality from RootImagePreprocessor into OcvUtilities. For now, just leave it as is in order to finish first pass of trait computation.
+
+	//TODO: Consider a set of defensive checks here to verify _image and _contour were constructed properly.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -69,9 +71,21 @@ double RootSystem::convexArea()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkDepth()
 {
-	return 0;
+	if (_contour.size() < 1)
+		return -1;
 
-	//TODO: Find the lowest y-value in the contour minus the highest y-value in the contour.
+	int minY = _contour[0].y;
+	int maxY = _contour[0].y;
+
+	for each (auto point in _contour)
+	{
+		if (point.y > maxY)
+			maxY = point.y;
+		if (point.y < minY)
+			minY = point.y;
+	}
+
+	return maxY - minY;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -110,9 +124,21 @@ double RootSystem::majorAxis()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkWidth()
 {
-	return 0;
+	if (_contour.size() < 1)
+		return -1;
 
-	//TODO: Find the highest x-value minus the lowest x-value.
+	int minX = _contour[0].x;
+	int maxX = _contour[0].x;
+
+	for each (auto point in _contour)
+	{
+		if (point.x > maxX)
+			maxX = point.x;
+		if (point.x < minX)
+			minX = point.x;
+	}
+
+	return maxX - minX;	//TODO: Note that this does not assume that pixels are in the same row as specified in the comment above. We should confirm that this is the desired behavior.
 }
 
 //////////////////////////////////////////////////////////////////////////////////

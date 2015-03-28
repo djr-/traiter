@@ -102,5 +102,5 @@ Mat RootImagePreprocessor::getRemovedContours()
 //////////////////////////////////////////////////////////////////////////////////
 vector<Point> RootImagePreprocessor::getRootContour()
 {
-	return rootContour;
+	return rootContour;	//TODO: Confirm that we are not off-by-one pixel in the contour as opposed to the image (from padding/removal)
 }
