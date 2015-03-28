@@ -11,7 +11,6 @@ class OcvUtilities final
 {
 public:
 	static int getLargestContourIndex(const std::vector<std::vector<cv::Point>>& contours);
-	static cv::RotatedRect computeBestFittingEllipse(const cv::Mat& image, const cv::Scalar maximumValue = cv::Scalar(255, 255, 255));
 	
 	static bool isPointInImage(const cv::Mat& image, const cv::Point& point);
 	template<typename T> static bool isPointExpectedColor(const cv::Mat& image, const cv::Point& point, const T color);

@@ -21,8 +21,8 @@ int main(int argc, char** argv)
 	RootSystem rootSystem = RootSystem(originalImage);
 
 	cout << "Network area: " << rootSystem.networkArea() << " pixels.\n";
-	//cout << "Perimeter: " << rootSystem.perimeter() << " pixels.\n";
-	//rootSystem.aspectRatio();
+	cout << "Perimeter: " << rootSystem.perimeter() << " pixels.\n";
+	rootSystem.aspectRatio();
 	rootSystem.convexArea();
 
 

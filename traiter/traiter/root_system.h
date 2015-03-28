@@ -38,4 +38,5 @@ private:
 	RootSystem();
 
 	cv::Mat _image;
+	std::vector<cv::Point> _contour;
 };

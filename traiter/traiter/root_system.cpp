@@ -13,8 +13,10 @@ using namespace cv;
 RootSystem::RootSystem(Mat image)
 {
 	_image = RootImagePreprocessor::prepareForAnalysis(image);
+	_contour = RootImagePreprocessor::getRootContour();
 
-	//TODO: Should we perform the findcontour here, and only perform our operations on that?
+	//TODO: Calling getRootContour() is ugly as it depends on prepareForAnalysis to be called first. We may want to precompute the contours,
+	//      and pull some of the functionality from RootImagePreprocessor into OcvUtilities. For now, just leave it as is in order to finish first pass of trait computation.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -48,22 +50,13 @@ double RootSystem::bushiness()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::convexArea()
 {
-	vector<vector<Point>> contours;
-	vector<Vec4i> hierarchy;
+	vector<Point> hull;
+	convexHull(_contour, hull);
 
-	findContours(_image.clone(), contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+	//TODO: Make a debugging flag to write out an image if the flag is turned on?
+	//drawContours(_image, vector<vector<Point>>(1, hull), 0, Scalar(255));	// drawContours expects a vector of vectors, so we need to construct the expected type from our largest hull contour.
 
-	int largestContourIndex = OcvUtilities::getLargestContourIndex(contours);
-
-	vector<Point> largestHull;
-	convexHull(Mat(contours[largestContourIndex]), largestHull);
-
-	// TODO: Do we want to save the hull as a seperate image for debugging?
-	//Mat drawing = Mat::zeros(_image.size(), CV_8UC1);
-	//drawContours(drawing, vector<vector<Point>>(1, largestHull), 0, Scalar(255));	// drawContours expects a vector of vectors, so we need to construct the expected type from our largest hull contour.
-	//drawContours(drawing, contours, largestContourIndex, Scalar(255));	//TODO: Fix issue where holes are not shown within the largest contour.
-
-	return contourArea(largestHull);
+	return contourArea(hull);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -196,7 +189,9 @@ double RootSystem::networkArea()
 		}
 	}
 
-	return networkArea;
+	//TODO: Consider using countNonZero(_image) here, although may not be useful for images that have different threshold settings.
+
+	return networkArea;	//TODO: Is there a way we can use the contour rather than the entire image here?
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -247,7 +242,10 @@ double RootSystem::perimeter()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::aspectRatio()
 {
-	OcvUtilities::computeBestFittingEllipse(_image, RootImagePreprocessor::getMaximumThresholdValue());
+	RotatedRect bestFittingEllipse = fitEllipse(_contour);
+
+	//TODO: Make a debugging flag to write out an image if the flag is turned on?
+	//ellipse(_image, bestFittingEllipse, Scalar(255));
 
 	return 0;
 }

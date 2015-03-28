@@ -4,6 +4,7 @@
 using namespace cv;
 
 Mat RootImagePreprocessor::removedContours;
+vector<Point> RootImagePreprocessor::rootContour;
 
 //////////////////////////////////////////////////////////////////////////////////
 // prepareForAnalysis()
@@ -76,6 +77,8 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 
 	OcvUtilities::removePadding(largestContour, image);
 
+	rootContour = contours[largestContourIndex];	// Cache the contour for later analysis
+
 	removedContours = removedContours - image;
 
 	return image;
@@ -90,4 +93,14 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 Mat RootImagePreprocessor::getRemovedContours()
 {
 	return removedContours;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// getRootContour()
+//
+// Returns the contour representing the root image that was produced.
+//////////////////////////////////////////////////////////////////////////////////
+vector<Point> RootImagePreprocessor::getRootContour()
+{
+	return rootContour;
 }
