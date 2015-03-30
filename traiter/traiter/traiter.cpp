@@ -22,10 +22,12 @@ int main(int argc, char** argv)
 
 	cout << "Network area: " << rootSystem.networkArea() << " pixels.\n";
 	cout << "Perimeter: " << rootSystem.perimeter() << " pixels.\n";
-	rootSystem.aspectRatio();
-	rootSystem.convexArea();
-	rootSystem.networkDepth();
-	rootSystem.networkWidth();
+	cout << "Convex Area: " << rootSystem.convexArea() << " pixels.\n";
+	cout << "Network Depth: " << rootSystem.networkDepth() << " pixels.\n";
+	cout << "Netowrk Width: " << rootSystem.networkWidth() << " pixels.\n";
+	cout << "Major Axis: " << rootSystem.majorAxis() << " pixels.\n";
+	cout << "Minor Axis: " << rootSystem.minorAxis() << " pixels.\n";
+	cout << "Aspect ratio: " <<  rootSystem.aspectRatio();
 
 	imshow("Root System Image", rootSystem.getImage());
 

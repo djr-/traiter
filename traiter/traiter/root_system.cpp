@@ -110,7 +110,9 @@ double RootSystem::networkLengthDistribution()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::majorAxis()
 {
-	return 0;
+	RotatedRect bestFittingEllipse = fitEllipse(_contour);
+
+	return round(max(bestFittingEllipse.size.width, bestFittingEllipse.size.height));
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +194,9 @@ double RootSystem::medianNumberOfRoots()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::minorAxis()
 {
-	return 0;
+	RotatedRect bestFittingEllipse = fitEllipse(_contour);
+
+	return round(min(bestFittingEllipse.size.width, bestFittingEllipse.size.height));
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -268,12 +272,7 @@ double RootSystem::perimeter()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::aspectRatio()
 {
-	RotatedRect bestFittingEllipse = fitEllipse(_contour);
-
-	//TODO: Make a debugging flag to write out an image if the flag is turned on?
-	//ellipse(_image, bestFittingEllipse, Scalar(255));
-
-	return 0;
+	return minorAxis() / majorAxis();
 }
 
 //////////////////////////////////////////////////////////////////////////////////
