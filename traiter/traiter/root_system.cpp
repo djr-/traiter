@@ -284,7 +284,7 @@ double RootSystem::aspectRatio()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkSolidity()
 {
-	return 0;
+	return networkArea() / convexArea();	//TODO: networkArea is computed based on pixels, convexArea is computed based on the contour. This ratio might not be apples to apples...
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -349,5 +349,5 @@ double RootSystem::networkVolume()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkWidthToDepthRatio()
 {
-	return 0;
+	return networkWidth() / networkDepth();
 }

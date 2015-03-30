@@ -27,7 +27,9 @@ int main(int argc, char** argv)
 	cout << "Netowrk Width: " << rootSystem.networkWidth() << " pixels.\n";
 	cout << "Major Axis: " << rootSystem.majorAxis() << " pixels.\n";
 	cout << "Minor Axis: " << rootSystem.minorAxis() << " pixels.\n";
-	cout << "Aspect ratio: " <<  rootSystem.aspectRatio();
+	cout << "Aspect ratio: " <<  rootSystem.aspectRatio() << endl;
+	cout << "Network solidity: " << rootSystem.networkSolidity() << endl;
+	cout << "Network width to depth ratio: " << rootSystem.networkWidthToDepthRatio() << endl;
 
 	imshow("Root System Image", rootSystem.getImage());
 
