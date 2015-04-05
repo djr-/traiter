@@ -7,7 +7,7 @@
 //
 // Computes traits for the specified root system image.
 //////////////////////////////////////////////////////////////////////////////////
-class RootSystem sealed
+class RootSystem
 {
 public:
 	RootSystem(cv::Mat image);

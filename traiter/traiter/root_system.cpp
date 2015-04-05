@@ -1,6 +1,7 @@
 #include "root_system.h"
-#include "root_image_preprocessor.h"
+#include "general_utilities.h"
 #include "ocv_utilities.h"
+#include "root_image_preprocessor.h"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
@@ -15,10 +16,12 @@ RootSystem::RootSystem(Mat image)
 	_image = RootImagePreprocessor::prepareForAnalysis(image);
 	_contour = RootImagePreprocessor::getRootContour();
 
-	//TODO: Calling getRootContour() is ugly as it depends on prepareForAnalysis to be called first. We may want to precompute the contours,
+	//TODO_DESIGN: Calling getRootContour() is ugly as it depends on prepareForAnalysis to be called first. We may want to precompute the contours,
 	//      and pull some of the functionality from RootImagePreprocessor into OcvUtilities. For now, just leave it as is in order to finish first pass of trait computation.
 
-	//TODO: Consider a set of defensive checks here to verify _image and _contour were constructed properly.
+	//TODO_PERF: We may want to consider only iterating through the image once, and computing all of these in one pass. This would speed things up significantly
+
+	//TODO_ROBUST: Consider a set of defensive checks here to verify _image and _contour were constructed properly.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +43,7 @@ cv::Mat RootSystem::getImage()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::bushiness()
 {
-	return 0;
+	return maximumNumberOfRoots() / medianNumberOfRoots();	//TODO_ROBUST: Check for division by zero here and below.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +58,7 @@ double RootSystem::convexArea()
 	vector<Point> hull;
 	convexHull(_contour, hull);
 
-	//TODO: Make a debugging flag to write out an image if the flag is turned on?
+	//TODO_ROBUST: Make a debugging flag to write out an image if the flag is turned on?
 	//drawContours(_image, vector<vector<Point>>(1, hull), 0, Scalar(255));	// drawContours expects a vector of vectors, so we need to construct the expected type from our largest hull contour.
 
 	return contourArea(hull);
@@ -182,7 +185,24 @@ double RootSystem::averageRootWidth()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::medianNumberOfRoots()
 {
-	return 0;
+	vector<int> numberOfRootsInRow(_image.size().height);
+
+	for (int row = 0; row < _image.size().height; ++row)
+	{
+		for (int col = 0; col < _image.size().width; ++col)
+		{
+			// If the current point is white, and the previous point was black, then we have found a new root.
+			if (OcvUtilities::isPointWhite(_image, Point(col, row)) && !OcvUtilities::isPointWhite(_image, Point(col - 1, row)))
+			{
+				numberOfRootsInRow[row]++;
+			}
+		}
+
+		if (numberOfRootsInRow[row] == 0)	// It should be safe to assume that once we have hit a row with no roots, there will be no more roots below that row.
+			break;
+	}
+
+	return GeneralUtilities::computeMedian(numberOfRootsInRow);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -194,7 +214,7 @@ double RootSystem::medianNumberOfRoots()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::minorAxis()
 {
-	RotatedRect bestFittingEllipse = fitEllipse(_contour);
+	RotatedRect bestFittingEllipse = fitEllipse(_contour);	//TODO_PERF: Compute the best fitting ellipse only once.
 
 	return round(min(bestFittingEllipse.size.width, bestFittingEllipse.size.height));
 }
@@ -219,9 +239,9 @@ double RootSystem::networkArea()
 		}
 	}
 
-	//TODO: Consider using countNonZero(_image) here, although may not be useful for images that have different threshold settings.
+	//TODO_DESIGN: Consider using countNonZero(_image) here, although may not be useful for images that have different threshold settings.
 
-	return networkArea;	//TODO: Is there a way we can use the contour rather than the entire image here?
+	return networkArea;	//TODO_DESIGN: Is there a way we can use the contour rather than the entire image here?
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -307,7 +327,7 @@ double RootSystem::specificRootLength()
 //
 // Units: cm^2
 //
-// The sum of the local surface area at each pixel of th network skeleton, as
+// The sum of the local surface area at each pixel of the network skeleton, as
 // approximated by a tubular shape whose radius is estimated from the image.
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkSurfaceArea()

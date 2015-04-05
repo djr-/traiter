@@ -32,7 +32,7 @@ private:
 	static cv::Mat removedContours;
 
 	// Default values for thresholding.
-	static const int thresholdValue = 176;
+	static const int thresholdValue = 183;	//TODO: 180 seems to match. 176 works better...
 	static const int thresholdType = cv::THRESH_BINARY;
 	static const int maximumThresholdValue = 255;
 };

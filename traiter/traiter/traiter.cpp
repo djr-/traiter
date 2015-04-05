@@ -1,19 +1,17 @@
+#include "general_utilities.h"
+#include "root_system.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
-#include <sys/stat.h>
-#include "root_system.h"
 
 using namespace std;
 using namespace cv;
-
-bool fileExists(const string& fileName);
 
 Mat originalImage;
 
 int main(int argc, char** argv)
 {
-	if (argc < 2 || !fileExists(argv[1]))
+	if (argc < 2 || !GeneralUtilities::fileExists(argv[1]))
 		return EXIT_FAILURE;
 
 	originalImage = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
@@ -30,21 +28,11 @@ int main(int argc, char** argv)
 	cout << "Aspect ratio: " <<  rootSystem.aspectRatio() << endl;
 	cout << "Network solidity: " << rootSystem.networkSolidity() << endl;
 	cout << "Network width to depth ratio: " << rootSystem.networkWidthToDepthRatio() << endl;
+	cout << "Median number of roots: " << rootSystem.medianNumberOfRoots() << endl;
 
 	imshow("Root System Image", rootSystem.getImage());
 
 	waitKey();
 	
 	return EXIT_SUCCESS;
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-// fileExists()
-//
-// Returns true if the specified file exists, false otherwise.
-//////////////////////////////////////////////////////////////////////////////////
-bool fileExists(const string& fileName)
-{
-	struct stat buffer;
-	return stat(fileName.c_str(), &buffer) == 0;
 }

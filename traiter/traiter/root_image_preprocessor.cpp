@@ -54,7 +54,7 @@ Mat RootImagePreprocessor::thresholdImage(Mat image)
 // Remove all contours that are not the largest contour.
 // Let's save a Mat of what was removed to removedContours to assist in debugging
 //
-// TODO: We may want to only remove the contours outside of the bounding rect.
+// TODO_ROBUST: We may want to only remove the contours outside of the bounding rect.
 //		 So only cleanup items inside boundingRect(contours[largestContourIndex])
 //////////////////////////////////////////////////////////////////////////////////
 Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
@@ -102,5 +102,5 @@ Mat RootImagePreprocessor::getRemovedContours()
 //////////////////////////////////////////////////////////////////////////////////
 vector<Point> RootImagePreprocessor::getRootContour()
 {
-	return rootContour;	//TODO: Confirm that we are not off-by-one pixel in the contour as opposed to the image (from padding/removal)
+	return rootContour;
 }
