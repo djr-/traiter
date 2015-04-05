@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
+using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////////
 // RootSystem::RootSystem()
@@ -157,7 +158,15 @@ double RootSystem::networkWidth()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::maximumNumberOfRoots()
 {
-	return 0;
+	const double PERCENTILE = 0.84;
+
+	vector<int> numberOfRootsInRow = computeNumberOfRootsInRows();
+
+	sort(numberOfRootsInRow.begin(), numberOfRootsInRow.end());
+
+	int maximumIndex = static_cast<int>(round(PERCENTILE * numberOfRootsInRow.size()));
+
+	return numberOfRootsInRow[maximumIndex];
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -185,24 +194,7 @@ double RootSystem::averageRootWidth()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::medianNumberOfRoots()
 {
-	vector<int> numberOfRootsInRow(_image.size().height);
-
-	for (int row = 0; row < _image.size().height; ++row)
-	{
-		for (int col = 0; col < _image.size().width; ++col)
-		{
-			// If the current point is white, and the previous point was black, then we have found a new root.
-			if (OcvUtilities::isPointWhite(_image, Point(col, row)) && !OcvUtilities::isPointWhite(_image, Point(col - 1, row)))
-			{
-				numberOfRootsInRow[row]++;
-			}
-		}
-
-		if (numberOfRootsInRow[row] == 0)	// It should be safe to assume that once we have hit a row with no roots, there will be no more roots below that row.
-			break;
-	}
-
-	return GeneralUtilities::computeMedian(numberOfRootsInRow);
+	return GeneralUtilities::computeMedian(computeNumberOfRootsInRows());
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -370,4 +362,42 @@ double RootSystem::networkVolume()
 double RootSystem::networkWidthToDepthRatio()
 {
 	return networkWidth() / networkDepth();
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// computeNumberOfRootsInRow()
+//
+// Returns a list of integers corresponding to the number of roots that were found
+// in each row of the image. A root can be considered to be "found" when we find
+// a white pixel when the previous pixel was black.
+//////////////////////////////////////////////////////////////////////////////////
+vector<int> RootSystem::computeNumberOfRootsInRows(bool includeZeroes)	//TODO_PERF: Compute this only once, rather than once for both maxmimum and minimum.
+{
+	vector<int> numberOfRootsInRows(_image.size().height);
+
+	for (int row = 0; row < _image.size().height; ++row)
+	{
+		for (int col = 0; col < _image.size().width; ++col)
+		{
+			// If the current point is white, and the previous point was black, then we have found a new root.
+			if (OcvUtilities::isPointWhite(_image, Point(col, row)) && !OcvUtilities::isPointWhite(_image, Point(col - 1, row)))
+			{
+				numberOfRootsInRows[row]++;
+			}
+		}
+
+		if (numberOfRootsInRows[row] == 0)	// It should be safe to assume that once we have hit a row with no roots, there will be no more roots below that row.
+			break;
+	}
+
+	if (!includeZeroes)
+	{
+		// Remove all zeroes from the list.
+		numberOfRootsInRows.erase(
+			remove_if(numberOfRootsInRows.begin(), numberOfRootsInRows.end(), [](const int numberOfRootsInRow) { return numberOfRootsInRow == 0; } ),
+			numberOfRootsInRows.end()
+			);
+	}
+
+	return numberOfRootsInRows;
 }

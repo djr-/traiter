@@ -37,6 +37,8 @@ public:
 private:
 	RootSystem();
 
+	std::vector<int> computeNumberOfRootsInRows(bool includeZeroes = false);
+
 	cv::Mat _image;
 	std::vector<cv::Point> _contour;
 };

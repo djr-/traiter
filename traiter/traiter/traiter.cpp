@@ -29,6 +29,8 @@ int main(int argc, char** argv)
 	cout << "Network solidity: " << rootSystem.networkSolidity() << endl;
 	cout << "Network width to depth ratio: " << rootSystem.networkWidthToDepthRatio() << endl;
 	cout << "Median number of roots: " << rootSystem.medianNumberOfRoots() << endl;
+	cout << "Maximum number of roots: " << rootSystem.maximumNumberOfRoots() << endl;
+	cout << "Bushiness: " << rootSystem.bushiness() << endl;
 
 	imshow("Root System Image", rootSystem.getImage());
 
