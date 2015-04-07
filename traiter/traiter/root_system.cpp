@@ -102,7 +102,29 @@ double RootSystem::networkDepth()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkLengthDistribution()
 {
-	return 0;
+	int lowerTwoThirdsStart = static_cast<int>(round(0.33 * networkDepth()));	//TODO: Network depth computation makes sense here only if the top of the image is where the network starts (true in current sample image case)
+
+	double lowerTwoThirdsArea = 0;
+
+	for (int row = lowerTwoThirdsStart; row <= networkDepth(); ++row)
+	{
+		for (int col = 0; col < _image.size().width; ++col)
+		{
+			if (OcvUtilities::isPointWhite(_image, Point(col, row)))
+			{
+				lowerTwoThirdsArea++;
+			}
+		}
+	}
+
+	//TODO_ROBUST: Allow debugging image to be output.
+	//for (int col = 0; col < _image.size().width; ++col)
+	//{
+	//	_image.at<uchar>(Point(col, lowerTwoThirdsStart)) = 255;
+	//	imshow("Lower Two-Thirds Line", _image);
+	//}
+
+	return lowerTwoThirdsArea / networkArea();	//TODO_PERF: Don't iterate through 2/3 of the image twice to compute this.
 }
 
 //////////////////////////////////////////////////////////////////////////////////

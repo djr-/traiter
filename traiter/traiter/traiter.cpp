@@ -31,6 +31,7 @@ int main(int argc, char** argv)
 	cout << "Median number of roots: " << rootSystem.medianNumberOfRoots() << endl;
 	cout << "Maximum number of roots: " << rootSystem.maximumNumberOfRoots() << endl;
 	cout << "Bushiness: " << rootSystem.bushiness() << endl;
+	cout << "Network length distribution: " << rootSystem.networkLengthDistribution() << endl;
 
 	imshow("Root System Image", rootSystem.getImage());
 
