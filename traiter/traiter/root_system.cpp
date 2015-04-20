@@ -16,6 +16,7 @@ RootSystem::RootSystem(Mat image)
 {
 	_image = RootImagePreprocessor::prepareForAnalysis(image);
 	_contour = RootImagePreprocessor::getRootContour();
+	_skeleton = RootImagePreprocessor::getSkeleton();
 
 	//TODO_DESIGN: Calling getRootContour() is ugly as it depends on prepareForAnalysis to be called first. We may want to precompute the contours,
 	//      and pull some of the functionality from RootImagePreprocessor into OcvUtilities. For now, just leave it as is in order to finish first pass of trait computation.

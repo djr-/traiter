@@ -7,14 +7,12 @@
 using namespace std;
 using namespace cv;
 
-Mat originalImage;
-
 int main(int argc, char** argv)
 {
 	if (argc < 2 || !GeneralUtilities::fileExists(argv[1]))
 		return EXIT_FAILURE;
 
-	originalImage = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
+	Mat originalImage = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
 
 	RootSystem rootSystem = RootSystem(originalImage);
 
@@ -32,6 +30,13 @@ int main(int argc, char** argv)
 	cout << "Maximum number of roots: " << rootSystem.maximumNumberOfRoots() << endl;
 	cout << "Bushiness: " << rootSystem.bushiness() << endl;
 	cout << "Network length distribution: " << rootSystem.networkLengthDistribution() << endl;
+
+	//TODO: Not done with these:
+	cout << "Network length " << rootSystem.networkLength() << " pixels.\n";
+	cout << "Average root width: " << rootSystem.averageRootWidth() << " pixels.\n";
+	cout << "Network surface area: " << rootSystem.networkSurfaceArea() << " pixels.\n";
+	cout << "Network volume: " << rootSystem.networkVolume() << " pixels.\n";
+	cout << "Specific root length: " << rootSystem.specificRootLength() << " pixels.\n";
 
 	imshow("Root System Image", rootSystem.getImage());
 

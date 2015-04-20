@@ -3,8 +3,9 @@
 
 using namespace cv;
 
-Mat RootImagePreprocessor::removedContours;
-vector<Point> RootImagePreprocessor::rootContour;
+Mat RootImagePreprocessor::_removedContours;
+vector<Point> RootImagePreprocessor::_rootContour;
+Mat RootImagePreprocessor::_skeleton;
 
 //////////////////////////////////////////////////////////////////////////////////
 // prepareForAnalysis()
@@ -19,7 +20,7 @@ Mat RootImagePreprocessor::prepareForAnalysis(Mat image)
 
 	keepOnlyLargestContour(processedImage);
 
-	//TODO: Compute skeleton of the image.
+	computeSkeleton(processedImage.clone());
 
 	return processedImage;
 }
@@ -59,7 +60,7 @@ Mat RootImagePreprocessor::thresholdImage(Mat image)
 //////////////////////////////////////////////////////////////////////////////////
 Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 {
-	removedContours = image.clone();
+	_removedContours = image.clone();
 
 	Mat largestContour;
 	OcvUtilities::padImage(image, largestContour);	// If we don't pad, then findContours will not mark the edge as part of the contour. We will fix then when we draw the contours on the original image.
@@ -77,11 +78,38 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 
 	OcvUtilities::removePadding(largestContour, image);
 
-	rootContour = contours[largestContourIndex];	// Cache the contour for later analysis
+	_rootContour = contours[largestContourIndex];	// Cache the contour for later analysis
 
-	removedContours = removedContours - image;
+	_removedContours = _removedContours - image;
 
 	return image;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// computeSkeleton()
+//
+// Compute the morphological skeleton of the image. This algorithm is based on
+// the skeletonization method described in Digital Image Processing by
+// Gonzalez and Woods 3rd Edition (page 651-654).
+//////////////////////////////////////////////////////////////////////////////////
+Mat RootImagePreprocessor::computeSkeleton(Mat image)
+{
+	_skeleton = Mat(image.size(), CV_8UC1, Scalar(0));
+	Mat element = getStructuringElement(MORPH_CROSS, Size(3, 3));
+	Mat erodedImage;
+	Mat openedImage;
+	
+	do
+	{
+		erode(image, erodedImage, element);
+		dilate(erodedImage, openedImage, element);
+		subtract(image, openedImage, openedImage);	// Note: At this point the variable "openedImage" is not exactly the opened image, but we can use it as a temporary store.
+		bitwise_or(_skeleton, openedImage, _skeleton);
+		erodedImage.copyTo(image);
+		
+	} while (!countNonZero(openedImage) == 0);
+
+	return _skeleton;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +120,7 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 //////////////////////////////////////////////////////////////////////////////////
 Mat RootImagePreprocessor::getRemovedContours()
 {
-	return removedContours;
+	return _removedContours;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -102,5 +130,15 @@ Mat RootImagePreprocessor::getRemovedContours()
 //////////////////////////////////////////////////////////////////////////////////
 vector<Point> RootImagePreprocessor::getRootContour()
 {
-	return rootContour;
+	return _rootContour;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// getSkeleton()
+//
+// Returns an image representing the skeleton of the image.
+//////////////////////////////////////////////////////////////////////////////////
+Mat RootImagePreprocessor::getSkeleton()
+{
+	return _skeleton;
 }

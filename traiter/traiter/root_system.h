@@ -41,4 +41,5 @@ private:
 
 	cv::Mat _image;
 	std::vector<cv::Point> _contour;
+	cv::Mat _skeleton;
 };
