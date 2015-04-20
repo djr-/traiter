@@ -243,20 +243,7 @@ double RootSystem::minorAxis()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkArea()
 {
-	double networkArea = 0;
-
-	MatIterator_<uchar> it, end;
-	for (it = _image.begin<uchar>(), end = _image.end<uchar>(); it != end; ++it)
-	{
-		if (*it == RootImagePreprocessor::getMaximumThresholdValue())
-		{
-			networkArea++;
-		}
-	}
-
-	//TODO_DESIGN: Consider using countNonZero(_image) here, although may not be useful for images that have different threshold settings.
-
-	return networkArea;	//TODO_DESIGN: Is there a way we can use the contour rather than the entire image here?
+	return countNonZero(_image);	//TODO_DESIGN: Is there a way we can use the contour rather than the entire image here?
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -359,7 +346,7 @@ double RootSystem::networkSurfaceArea()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkLength()
 {
-	return 0;
+	return countNonZero(_skeleton);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
