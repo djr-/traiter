@@ -1,7 +1,10 @@
 #include "root_image_preprocessor.h"
 #include "ocv_utilities.h"
+#include "thresh_method.h"
 
 using namespace cv;
+using namespace Traiter;
+using namespace Utility;
 
 Mat RootImagePreprocessor::_removedContours;
 vector<Point> RootImagePreprocessor::_rootContour;
@@ -16,7 +19,20 @@ Mat RootImagePreprocessor::prepareForAnalysis(Mat image)
 {
 	Mat processedImage = image.clone();
 
-	thresholdImage(processedImage);
+	ThreshMethod thresholdingMethod = ADAPTIVE_THRESH;	//TODO: This should be user specifiable.
+
+	switch (thresholdingMethod)
+	{
+	case THRESH:
+		threshold(processedImage, processedImage, thresholdValue, maximumThresholdValue, thresholdType);
+		break;
+	case ADAPTIVE_THRESH:
+		adaptiveThreshold(processedImage, processedImage, maximumThresholdValue, ADAPTIVE_THRESH_MEAN_C, thresholdType, defaultBlockSize, 0);
+		break;
+	case DOUBLE_ADAPTIVE_THRESH:
+		threshold(processedImage, processedImage, thresholdValue, maximumThresholdValue, thresholdType);	//TODO: Implement doubly adaptive thresholding.
+		break;
+	}
 
 	keepOnlyLargestContour(processedImage);
 
@@ -33,20 +49,6 @@ Mat RootImagePreprocessor::prepareForAnalysis(Mat image)
 int RootImagePreprocessor::getMaximumThresholdValue()
 {
 	return maximumThresholdValue;
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-// thresholdImage()
-//
-// Thresholds the image according to the configurations threshold parameters.
-//
-// TODO: Add support for adaptive and double adaptive thresholding rather than always using global.
-//////////////////////////////////////////////////////////////////////////////////
-Mat RootImagePreprocessor::thresholdImage(Mat image)
-{
-	threshold(image, image, thresholdValue, maximumThresholdValue, thresholdType);
-
-	return image;
 }
 
 //////////////////////////////////////////////////////////////////////////////////

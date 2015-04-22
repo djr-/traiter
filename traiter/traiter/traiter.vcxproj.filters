@@ -44,5 +44,8 @@
     <ClInclude Include="general_utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thresh_method.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

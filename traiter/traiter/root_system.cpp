@@ -6,6 +6,8 @@
 
 using namespace cv;
 using namespace std;
+using namespace Traiter;
+using namespace Utility;
 
 //////////////////////////////////////////////////////////////////////////////////
 // RootSystem::RootSystem()
