@@ -6,7 +6,6 @@ using namespace cv;
 using namespace Traiter;
 using namespace Utility;
 
-Mat RootImagePreprocessor::_removedContours;
 vector<Point> RootImagePreprocessor::_rootContour;
 Mat RootImagePreprocessor::_skeleton;
 
@@ -62,8 +61,6 @@ int RootImagePreprocessor::getMaximumThresholdValue()
 //////////////////////////////////////////////////////////////////////////////////
 Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 {
-	_removedContours = image.clone();
-
 	Mat largestContour;
 	OcvUtilities::padImage(image, largestContour);	// If we don't pad, then findContours will not mark the edge as part of the contour. We will fix then when we draw the contours on the original image.
 
@@ -81,8 +78,6 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 	OcvUtilities::removePadding(largestContour, image);
 
 	_rootContour = contours[largestContourIndex];	// Cache the contour for later analysis
-
-	_removedContours = _removedContours - image;
 
 	return image;
 }
@@ -112,17 +107,6 @@ Mat RootImagePreprocessor::computeSkeleton(Mat image)
 	} while (!countNonZero(openedImage) == 0);
 
 	return _skeleton;
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-// getRemovedContours()
-//
-// Returns an image showing which contours were removed from the specified image.
-// Note that this does not return a cloned version of removedContours!
-//////////////////////////////////////////////////////////////////////////////////
-Mat RootImagePreprocessor::getRemovedContours()
-{
-	return _removedContours;
 }
 
 //////////////////////////////////////////////////////////////////////////////////

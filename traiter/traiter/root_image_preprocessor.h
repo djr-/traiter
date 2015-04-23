@@ -32,9 +32,6 @@ namespace Traiter
 		static std::vector<cv::Point> _rootContour;
 		static cv::Mat _skeleton;
 
-		// Data useful for debugging/analysis
-		static cv::Mat _removedContours;
-
 		// Default values for thresholding.
 		static const int thresholdValue = 183;	//TODO: 180 seems to match. 176 works better...
 		static const int thresholdType = cv::THRESH_BINARY;
