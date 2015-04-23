@@ -44,10 +44,10 @@ cv::Mat RootSystem::getImage()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::bushiness()
 {
-	if (medianNumberOfRoots() > 0)
+	if (medianNumberOfRoots() != 0)
 		return maximumNumberOfRoots() / medianNumberOfRoots();
 		
-	return 0;
+	return -1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -127,10 +127,10 @@ double RootSystem::networkLengthDistribution()
 	//	imshow("Lower Two-Thirds Line", _image);
 	//}
 
-	if (networkArea() > 0)
+	if (networkArea() != 0)
 		return lowerTwoThirdsArea / networkArea();	//TODO_PERF: Don't iterate through 2/3 of the image twice to compute this.
 
-	return 0;
+	return -1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -299,10 +299,10 @@ double RootSystem::perimeter()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::aspectRatio()
 {
-	if (majorAxis() > 0)
+	if (majorAxis() != 0)
 		return minorAxis() / majorAxis();
 
-	return 0;
+	return -1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -314,10 +314,10 @@ double RootSystem::aspectRatio()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkSolidity()
 {
-	if (convexArea() > 0)
+	if (convexArea() != 0)
 		return networkArea() / convexArea();	//TODO: networkArea is computed based on pixels, convexArea is computed based on the contour. This ratio might not be apples to apples...
 
-	return 0;
+	return -1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -382,10 +382,10 @@ double RootSystem::networkVolume()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkWidthToDepthRatio()
 {
-	if (networkDepth() > 0)
+	if (networkDepth() != 0)
 		return networkWidth() / networkDepth();
 
-	return 0;
+	return -1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
