@@ -7,7 +7,6 @@ using namespace Traiter;
 using namespace Utility;
 
 vector<Point> RootImagePreprocessor::_rootContour;
-Mat RootImagePreprocessor::_skeleton;
 
 //////////////////////////////////////////////////////////////////////////////////
 // prepareForAnalysis()
@@ -35,8 +34,6 @@ Mat RootImagePreprocessor::prepareForAnalysis(Mat image)
 
 	keepOnlyLargestContour(processedImage);
 
-	computeSkeleton(processedImage.clone());
-
 	return processedImage;
 }
 
@@ -54,7 +51,6 @@ int RootImagePreprocessor::getMaximumThresholdValue()
 // keepOnlyLargestContour()
 //
 // Remove all contours that are not the largest contour.
-// Let's save a Mat of what was removed to removedContours to assist in debugging
 //
 // TODO_ROBUST: We may want to only remove the contours outside of the bounding rect.
 //		 So only cleanup items inside boundingRect(contours[largestContourIndex])
@@ -83,33 +79,6 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-// computeSkeleton()
-//
-// Compute the morphological skeleton of the image. This algorithm is based on
-// the skeletonization method described in Digital Image Processing by
-// Gonzalez and Woods 3rd Edition (page 651-654).
-//////////////////////////////////////////////////////////////////////////////////
-Mat RootImagePreprocessor::computeSkeleton(Mat image)
-{
-	_skeleton = Mat(image.size(), CV_8UC1, Scalar(0));
-	Mat element = getStructuringElement(MORPH_CROSS, Size(3, 3));
-	Mat erodedImage;
-	Mat openedImage;
-	
-	do
-	{
-		erode(image, erodedImage, element);
-		dilate(erodedImage, openedImage, element);
-		subtract(image, openedImage, openedImage);	// Note: At this point the variable "openedImage" is not exactly the opened image, but we can use it as a temporary store.
-		bitwise_or(_skeleton, openedImage, _skeleton);
-		erodedImage.copyTo(image);
-		
-	} while (!countNonZero(openedImage) == 0);
-
-	return _skeleton;
-}
-
-//////////////////////////////////////////////////////////////////////////////////
 // getRootContour()
 //
 // Returns the contour representing the root image that was produced.
@@ -117,14 +86,4 @@ Mat RootImagePreprocessor::computeSkeleton(Mat image)
 vector<Point> RootImagePreprocessor::getRootContour()
 {
 	return _rootContour;
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-// getSkeleton()
-//
-// Returns an image representing the skeleton of the image.
-//////////////////////////////////////////////////////////////////////////////////
-Mat RootImagePreprocessor::getSkeleton()
-{
-	return _skeleton;
 }

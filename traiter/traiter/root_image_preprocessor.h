@@ -17,7 +17,6 @@ namespace Traiter
 		static cv::Mat prepareForAnalysis(cv::Mat image);
 		static int getMaximumThresholdValue();
 		static std::vector<cv::Point> getRootContour();
-		static cv::Mat getSkeleton();
 
 		// Debugging/analysis functions.
 		static cv::Mat getRemovedContours();
@@ -26,11 +25,9 @@ namespace Traiter
 
 		// Helper functions to prepare image for analysis
 		static cv::Mat keepOnlyLargestContour(cv::Mat image);
-		static cv::Mat computeSkeleton(cv::Mat image);
 
 		// Helpful data to cache for analysis
 		static std::vector<cv::Point> _rootContour;
-		static cv::Mat _skeleton;
 
 		// Default values for thresholding.
 		static const int thresholdValue = 183;	//TODO: 180 seems to match. 176 works better...
