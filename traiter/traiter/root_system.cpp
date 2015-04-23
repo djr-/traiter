@@ -128,7 +128,7 @@ double RootSystem::networkLengthDistribution()
 	//}
 
 	if (networkArea() != 0)
-		return lowerTwoThirdsArea / networkArea();	//TODO_PERF: Don't iterate through 2/3 of the image twice to compute this.
+		return lowerTwoThirdsArea / networkArea();
 
 	return -1;
 }
@@ -234,7 +234,7 @@ double RootSystem::medianNumberOfRoots()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::minorAxis()
 {
-	RotatedRect bestFittingEllipse = fitEllipse(_contour);	//TODO_PERF: Compute the best fitting ellipse only once.
+	RotatedRect bestFittingEllipse = fitEllipse(_contour);
 
 	return round(min(bestFittingEllipse.size.width, bestFittingEllipse.size.height));
 }
@@ -248,7 +248,7 @@ double RootSystem::minorAxis()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkArea()
 {
-	return countNonZero(_image);	//TODO_DESIGN: Is there a way we can use the contour rather than the entire image here?
+	return countNonZero(_image);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -395,7 +395,7 @@ double RootSystem::networkWidthToDepthRatio()
 // in each row of the image. A root can be considered to be "found" when we find
 // a white pixel when the previous pixel was black.
 //////////////////////////////////////////////////////////////////////////////////
-vector<int> RootSystem::computeNumberOfRootsInRows(bool includeZeroes)	//TODO_PERF: Compute this only once, rather than once for both maxmimum and minimum.
+vector<int> RootSystem::computeNumberOfRootsInRows(bool includeZeroes)
 {
 	vector<int> numberOfRootsInRows(_image.size().height);
 

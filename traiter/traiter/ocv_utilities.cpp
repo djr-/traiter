@@ -9,9 +9,6 @@ using namespace utility;
 //
 // Remove all contours that are not the largest contour from the specified image.
 // Returns the contour that was found.
-//
-// TODO_ROBUST: We may want to only remove the contours outside of the bounding rect.
-//		 So only cleanup items inside boundingRect(contours[largestContourIndex])
 //////////////////////////////////////////////////////////////////////////////////
 vector<Point> OcvUtilities::keepOnlyLargestContour(Mat& originalImage)
 {
