@@ -28,12 +28,6 @@ namespace Traiter
 
 		// Helpful data to cache for analysis
 		static std::vector<cv::Point> _rootContour;
-
-		// Default values for thresholding.
-		static const int thresholdValue = 183;	//TODO: 180 seems to match. 176 works better...
-		static const int thresholdType = cv::THRESH_BINARY;
-		static const int maximumThresholdValue = 255;
-		static const int defaultBlockSize = 19;
 	};
 
 }

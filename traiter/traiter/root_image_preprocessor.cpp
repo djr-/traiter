@@ -17,34 +17,9 @@ Mat RootImagePreprocessor::prepareForAnalysis(Mat image)
 {
 	Mat processedImage = image.clone();
 
-	ThreshMethod thresholdingMethod = ADAPTIVE_THRESH;	//TODO: This should be user specifiable.
-
-	switch (thresholdingMethod)
-	{
-	case THRESH:
-		threshold(processedImage, processedImage, thresholdValue, maximumThresholdValue, thresholdType);
-		break;
-	case ADAPTIVE_THRESH:
-		adaptiveThreshold(processedImage, processedImage, maximumThresholdValue, ADAPTIVE_THRESH_MEAN_C, thresholdType, defaultBlockSize, 0);
-		break;
-	case DOUBLE_ADAPTIVE_THRESH:
-		threshold(processedImage, processedImage, thresholdValue, maximumThresholdValue, thresholdType);	//TODO: Implement doubly adaptive thresholding.
-		break;
-	}
-
 	keepOnlyLargestContour(processedImage);
 
 	return processedImage;
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-// getMaximumThresholdValue()
-//
-// Returns the maximum threshold value that was used to threshold the image.
-//////////////////////////////////////////////////////////////////////////////////
-int RootImagePreprocessor::getMaximumThresholdValue()
-{
-	return maximumThresholdValue;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +44,7 @@ Mat RootImagePreprocessor::keepOnlyLargestContour(Mat image)
 	image = image.zeros(image.size(), CV_8UC1);	// Clear the existing image before drawing the largest contour back onto it.
 	largestContour = largestContour.zeros(largestContour.size(), CV_8UC1);
 
-	drawContours(largestContour, contours, largestContourIndex, Scalar(maximumThresholdValue), CV_FILLED, 8, hierarchy);
+	drawContours(largestContour, contours, largestContourIndex, Scalar(255), CV_FILLED, 8, hierarchy);	//TODO: Instead of 255, use maximumThresholdValue
 
 	OcvUtilities::removePadding(largestContour, image);
 

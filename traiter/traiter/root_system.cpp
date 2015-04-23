@@ -3,6 +3,8 @@
 #include "ocv_utilities.h"
 #include "root_image_preprocessor.h"
 #include "skeletonizer.h"
+#include "thresh_method.h"
+#include "thresholder.h"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
@@ -17,6 +19,7 @@ using namespace Utility;
 //////////////////////////////////////////////////////////////////////////////////
 RootSystem::RootSystem(Mat image)
 {
+	_image = segment::Thresholder::threshold(image, ADAPTIVE_THRESH);
 	_image = RootImagePreprocessor::prepareForAnalysis(image);
 	_contour = RootImagePreprocessor::getRootContour();
 	_skeleton = morph::Skeletonizer::computeMorphologicalSkeleton(_image);

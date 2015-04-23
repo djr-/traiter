@@ -33,6 +33,9 @@
     <ClCompile Include="skeletonizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="thresholder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="root_system.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="skeletonizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thresholder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
