@@ -3,7 +3,7 @@
 #include <algorithm>
 
 using namespace std;
-using namespace Utility;
+using namespace utility;
 
 //////////////////////////////////////////////////////////////////////////////////
 // fileExists()

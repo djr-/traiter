@@ -2,7 +2,7 @@
 
 #include <opencv2/imgproc/imgproc.hpp>
 
-namespace Utility
+namespace utility
 {
 	//////////////////////////////////////////////////////////////////////////////////
 	// OcvUtilities
@@ -12,6 +12,7 @@ namespace Utility
 	class OcvUtilities final
 	{
 	public:
+		static std::vector<cv::Point> keepOnlyLargestContour(cv::Mat& originalImage);
 		static int getLargestContourIndex(const std::vector<std::vector<cv::Point>>& contours);
 
 		static bool isPointInImage(const cv::Mat& image, const cv::Point& point);

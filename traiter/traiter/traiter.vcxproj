@@ -86,7 +86,6 @@
   <ItemGroup>
     <ClCompile Include="general_utilities.cpp" />
     <ClCompile Include="ocv_utilities.cpp" />
-    <ClCompile Include="root_image_preprocessor.cpp" />
     <ClCompile Include="root_system.cpp" />
     <ClCompile Include="thresholder.cpp" />
     <ClCompile Include="skeletonizer.cpp" />
@@ -95,7 +94,6 @@
   <ItemGroup>
     <ClInclude Include="general_utilities.h" />
     <ClInclude Include="ocv_utilities.h" />
-    <ClInclude Include="root_image_preprocessor.h" />
     <ClInclude Include="root_system.h" />
     <ClInclude Include="thresholder.h" />
     <ClInclude Include="skeletonizer.h" />

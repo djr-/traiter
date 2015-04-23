@@ -1,7 +1,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-namespace Traiter
+namespace traiter
 {
 	enum ThreshMethod;
 }
@@ -16,7 +16,7 @@ namespace segment
 	class Thresholder final
 	{
 	public:
-		static cv::Mat threshold(const cv::Mat& originalImage, const Traiter::ThreshMethod thresholdingMethod);
+		static cv::Mat threshold(const cv::Mat& originalImage, const traiter::ThreshMethod thresholdingMethod);
 	private:
 		static const int thresholdValue = 183;	//TODO_ROBUST: Allow user to alter this value.
 		static const int thresholdType = cv::THRESH_BINARY;

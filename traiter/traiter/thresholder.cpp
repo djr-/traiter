@@ -4,7 +4,7 @@
 
 using namespace cv;
 using namespace segment;
-using namespace Traiter;
+using namespace traiter;
 
 //////////////////////////////////////////////////////////////////////////////////
 // threshold()
@@ -12,7 +12,7 @@ using namespace Traiter;
 // Thresholds the image according to the specified method, and returns the
 // thresholded image.
 //////////////////////////////////////////////////////////////////////////////////
-Mat Thresholder::threshold(const Mat& originalImage, const Traiter::ThreshMethod thresholdingMethod)
+Mat Thresholder::threshold(const Mat& originalImage, const traiter::ThreshMethod thresholdingMethod)
 {
 	Mat image = originalImage.clone();
 

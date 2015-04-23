@@ -3,7 +3,7 @@
 #include <vector>
 #include <cmath>
 
-namespace Utility
+namespace utility
 {
 	//////////////////////////////////////////////////////////////////////////////////
 	// GeneralUtilities
@@ -30,7 +30,7 @@ namespace Utility
 //
 // Computes the median of the specified list and returns the result as a double.
 //////////////////////////////////////////////////////////////////////////////////
-template<typename T> static double Utility::GeneralUtilities::computeMedian(std::vector<T> list)
+template<typename T> static double utility::GeneralUtilities::computeMedian(std::vector<T> list)
 {
 	std::sort(list.begin(), list.end());
 

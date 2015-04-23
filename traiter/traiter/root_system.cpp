@@ -1,7 +1,6 @@
 #include "root_system.h"
 #include "general_utilities.h"
 #include "ocv_utilities.h"
-#include "root_image_preprocessor.h"
 #include "skeletonizer.h"
 #include "thresh_method.h"
 #include "thresholder.h"
@@ -9,8 +8,10 @@
 
 using namespace cv;
 using namespace std;
-using namespace Traiter;
-using namespace Utility;
+using namespace morph;
+using namespace segment;
+using namespace traiter;
+using namespace utility;
 
 //////////////////////////////////////////////////////////////////////////////////
 // RootSystem::RootSystem()
@@ -19,17 +20,9 @@ using namespace Utility;
 //////////////////////////////////////////////////////////////////////////////////
 RootSystem::RootSystem(Mat image)
 {
-	_image = segment::Thresholder::threshold(image, ADAPTIVE_THRESH);
-	_image = RootImagePreprocessor::prepareForAnalysis(image);
-	_contour = RootImagePreprocessor::getRootContour();
+	_image = segment::Thresholder::threshold(image, THRESH);
+	_contour = OcvUtilities::keepOnlyLargestContour(_image);
 	_skeleton = morph::Skeletonizer::computeMorphologicalSkeleton(_image);
-
-	//TODO_DESIGN: Calling getRootContour() is ugly as it depends on prepareForAnalysis to be called first. We may want to precompute the contours,
-	//      and pull some of the functionality from RootImagePreprocessor into OcvUtilities. For now, just leave it as is in order to finish first pass of trait computation.
-
-	//TODO_PERF: We may want to consider only iterating through the image once, and computing all of these in one pass. This would speed things up significantly
-
-	//TODO_ROBUST: Consider a set of defensive checks here to verify _image and _contour were constructed properly.
 }
 
 //////////////////////////////////////////////////////////////////////////////////

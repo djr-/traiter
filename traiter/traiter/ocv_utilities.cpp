@@ -2,7 +2,37 @@
 
 using namespace std;
 using namespace cv;
-using namespace Utility;
+using namespace utility;
+
+//////////////////////////////////////////////////////////////////////////////////
+// keepOnlyLargestContour()
+//
+// Remove all contours that are not the largest contour from the specified image.
+// Returns the contour that was found.
+//
+// TODO_ROBUST: We may want to only remove the contours outside of the bounding rect.
+//		 So only cleanup items inside boundingRect(contours[largestContourIndex])
+//////////////////////////////////////////////////////////////////////////////////
+vector<Point> OcvUtilities::keepOnlyLargestContour(Mat& originalImage)
+{
+	Mat largestContourImage;
+	padImage(originalImage, largestContourImage);	// If we don't pad, then findContours will not mark the edge as part of the contour.
+
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierarchy;
+	findContours(largestContourImage, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE);
+
+	int largestContourIndex = getLargestContourIndex(contours);
+
+	originalImage = originalImage.zeros(originalImage.size(), CV_8UC1);	// Clear the existing image before drawing the largest contour back onto it.
+	largestContourImage = largestContourImage.zeros(largestContourImage.size(), CV_8UC1);
+
+	drawContours(largestContourImage, contours, largestContourIndex, Scalar(255), CV_FILLED, 8, hierarchy);	//TODO: Instead of 255, use maximumThresholdValue
+
+	removePadding(largestContourImage, originalImage);
+
+	return contours[largestContourIndex];
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 // getLargestContourIndex()
