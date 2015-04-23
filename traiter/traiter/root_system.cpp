@@ -44,7 +44,10 @@ cv::Mat RootSystem::getImage()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::bushiness()
 {
-	return maximumNumberOfRoots() / medianNumberOfRoots();	//TODO_ROBUST: Check for division by zero here and below.
+	if (medianNumberOfRoots() > 0)
+		return maximumNumberOfRoots() / medianNumberOfRoots();
+		
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +127,10 @@ double RootSystem::networkLengthDistribution()
 	//	imshow("Lower Two-Thirds Line", _image);
 	//}
 
-	return lowerTwoThirdsArea / networkArea();	//TODO_PERF: Don't iterate through 2/3 of the image twice to compute this.
+	if (networkArea() > 0)
+		return lowerTwoThirdsArea / networkArea();	//TODO_PERF: Don't iterate through 2/3 of the image twice to compute this.
+
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +299,10 @@ double RootSystem::perimeter()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::aspectRatio()
 {
-	return minorAxis() / majorAxis();
+	if (majorAxis() > 0)
+		return minorAxis() / majorAxis();
+
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -305,7 +314,10 @@ double RootSystem::aspectRatio()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkSolidity()
 {
-	return networkArea() / convexArea();	//TODO: networkArea is computed based on pixels, convexArea is computed based on the contour. This ratio might not be apples to apples...
+	if (convexArea() > 0)
+		return networkArea() / convexArea();	//TODO: networkArea is computed based on pixels, convexArea is computed based on the contour. This ratio might not be apples to apples...
+
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -370,7 +382,10 @@ double RootSystem::networkVolume()
 //////////////////////////////////////////////////////////////////////////////////
 double RootSystem::networkWidthToDepthRatio()
 {
-	return networkWidth() / networkDepth();
+	if (networkDepth() > 0)
+		return networkWidth() / networkDepth();
+
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
