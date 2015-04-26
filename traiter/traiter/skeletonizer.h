@@ -13,5 +13,6 @@ namespace morph
 	{
 	public:
 		static cv::Mat computeMorphologicalSkeleton(const cv::Mat& originalImage);
+		static cv::Mat computeMedialAxisTransform(const cv::Mat& originalImage);
 	};
 }

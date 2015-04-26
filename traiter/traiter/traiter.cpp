@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 	cout << "Network volume: " << rootSystem.networkVolume() << " pixels.\n";
 	cout << "Specific root length: " << rootSystem.specificRootLength() << " pixels.\n";
 
+	imwrite("tmp.jpg", rootSystem.getImage());
 	imshow("Root System Image", rootSystem.getImage());
 
 	waitKey();

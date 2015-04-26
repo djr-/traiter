@@ -32,6 +32,9 @@ namespace utility
 //////////////////////////////////////////////////////////////////////////////////
 template<typename T> static double utility::GeneralUtilities::computeMedian(std::vector<T> list)
 {
+	if (list.size() == 0)
+		return -1;
+
 	std::sort(list.begin(), list.end());
 
 	if (list.size() % 2 != 0)

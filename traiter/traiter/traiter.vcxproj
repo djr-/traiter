@@ -92,6 +92,7 @@
     <ClCompile Include="traiter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="direction.h" />
     <ClInclude Include="general_utilities.h" />
     <ClInclude Include="ocv_utilities.h" />
     <ClInclude Include="root_system.h" />

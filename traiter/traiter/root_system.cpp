@@ -22,7 +22,8 @@ RootSystem::RootSystem(Mat image)
 {
 	_image = segment::Thresholder::threshold(image, THRESH);
 	_contour = OcvUtilities::keepOnlyLargestContour(_image);
-	_skeleton = morph::Skeletonizer::computeMorphologicalSkeleton(_image);
+	//_skeleton = morph::Skeletonizer::computeMorphologicalSkeleton(_image);
+	_skeleton = morph::Skeletonizer::computeMedialAxisTransform(_image);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
