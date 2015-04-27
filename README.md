@@ -1,6 +1,6 @@
 # Traiter
 
-A plant root system trait analyzer inspired by GiARoots
+A plant root system trait analyzer based on GiARoots
 
 ## Prerequisites
 
