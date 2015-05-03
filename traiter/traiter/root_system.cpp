@@ -282,7 +282,7 @@ double RootSystem::perimeter()
 					}
 				}
 
-				if (allWhiteNeighbors)
+				if (!allWhiteNeighbors)
 					perimeter++;
 			}
 		}
