@@ -15,6 +15,10 @@ Make an environment variable named OPENCV_DIR and point it to [your OpenCV direc
 
 traiter [image_name]
 
+## Usage Notes
+
+Currently, the thresholding value is hardcoded to a reasonable default value, and the thresholding type is always set to standard thresholding.
+
 ## Creator
 
 Drew Ryder
